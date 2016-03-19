@@ -410,8 +410,16 @@ class CheckCucumber < Sensu::Plugin::Check::CLI
                              WARNING
                            end
 
+    scenario_action = case scenario_status
+                      when :passed
+                        'resolve'
+                      else
+                        'create'
+                      end
+
     sensu_event = {
       name: event_name,
+      action: scenario_action,
       handlers: [config[:handler]],
       status: scenario_status_code,
       output: scenario_output,
